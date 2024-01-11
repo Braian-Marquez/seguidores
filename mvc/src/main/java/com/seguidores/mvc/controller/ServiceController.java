@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("service")
@@ -27,9 +29,19 @@ public class ServiceController {
 
 
     @GetMapping("find-all-services")
-    public List<ServiceResponse> getEventAll() {
+    public List<ServiceResponse> getServiceAll() {
         return serviceAPI.getAll();
     }
+
+    @GetMapping("/find-all-services-category")
+    public List<ServiceResponse> getServiceCategory(@RequestParam("category") String category) {
+        String lowercaseCategory = category.toLowerCase();
+        List<ServiceResponse> allServices = serviceAPI.getAll();
+        return allServices.stream()
+                .filter(service -> service.getCategory().toLowerCase().contains(lowercaseCategory))
+                .collect(Collectors.toList());
+    }
+
 
     @GetMapping("calculated-price")
     public ResponseEntity<?> calculatedPrice(@RequestParam("id-service") Integer idService, @RequestParam("quantity") Integer quantity) {

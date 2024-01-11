@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("notifications")
 @RequiredArgsConstructor
 public class WebhookController {
 
-    @Value("${mp.MP_ACCESS_TOKEN")
+    @Value("${mp.MP_ACCESS_TOKEN}")
     private String MP_ACCESS_TOKEN;
+
     private final OrderService service;
 
     @PostMapping("/webhook")
@@ -56,6 +58,7 @@ public class WebhookController {
 
 
                 String jsonResponse = response.getBody();
+                System.out.printf(Objects.requireNonNull(response.getBody()));
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 

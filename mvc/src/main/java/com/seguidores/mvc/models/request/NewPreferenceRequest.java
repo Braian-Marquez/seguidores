@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class NewPreferenceRequest implements Serializable {
 
-    private String accessToken;
     private PreferenceItem items;
     private PayerInfo payerInfo;
 

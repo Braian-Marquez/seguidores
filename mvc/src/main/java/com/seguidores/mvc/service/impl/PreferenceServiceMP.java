@@ -36,6 +36,9 @@ public class PreferenceServiceMP {
     @Value("${mp.WEBHOOK_TOKEN}")
     private String WEBHOOK_TOKEN;
 
+    @Value("${mp.MP_ACCESS_TOKEN}")
+    private String MP_ACCESS_TOKEN;
+
     public ResponseEntity<?> createPaymentMP(NewPreferenceRequest preferenceDTO) throws MPException {
 
         List<ServiceResponse> serviceList = service.getAll();
@@ -70,14 +73,14 @@ public class PreferenceServiceMP {
             throw new NotFoundException("The request cannot be processed at this time, please try again later.");
         }
 
-        if (StringUtils.isEmpty(preferenceDTO.getAccessToken())) {
+        if (StringUtils.isEmpty(MP_ACCESS_TOKEN)) {
             return ResponseEntity.badRequest().body("Access token is mandatory");
         }
         if (preferenceDTO.getItems() == null) {
             return ResponseEntity.badRequest().body("Items empty");
         }
 
-        MercadoPago.SDK.setAccessToken(preferenceDTO.getAccessToken());
+        MercadoPago.SDK.setAccessToken(MP_ACCESS_TOKEN);
         String notificationUrl = URL_GENERIC;
 
         Preference p = new Preference();
