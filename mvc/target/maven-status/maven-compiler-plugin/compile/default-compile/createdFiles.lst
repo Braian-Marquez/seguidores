@@ -12,6 +12,7 @@ com/seguidores/mvc/models/request/WebhookNotification.class
 com/seguidores/mvc/models/request/WebhookNotificationData.class
 com/seguidores/mvc/controller/ServiceController.class
 com/seguidores/mvc/models/entity/StatusPayment.class
+com/seguidores/mvc/config/CorsConfig.class
 com/seguidores/mvc/exceptions/GlobalHandleException.class
 com/seguidores/mvc/exceptions/NotFoundException.class
 com/seguidores/mvc/models/entity/OrderPayment.class

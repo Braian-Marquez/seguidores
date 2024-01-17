@@ -2,8 +2,10 @@ package com.seguidores.mvc.controller;
 
 import com.seguidores.mvc.exceptions.NotFoundException;
 import com.seguidores.mvc.models.entity.OrderPayment;
+import com.seguidores.mvc.models.entity.StatusPayment;
+import com.seguidores.mvc.models.repository.OrderPaymentRepository;
 import com.seguidores.mvc.models.response.ServiceResponse;
-import com.seguidores.mvc.service.impl.OrderService;
+import com.seguidores.mvc.service.impl.ServiceImpl;
 import com.seguidores.mvc.service.interfaces.ServiceAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 public class ServiceController {
 
     private final ServiceAPI serviceAPI;
-    private final OrderService orderService;
-
+    private final OrderPaymentRepository orderPaymentRepository;
+    private final ServiceImpl service;
 
     @GetMapping("find-all-services")
     public List<ServiceResponse> getServiceAll() {
@@ -41,7 +41,6 @@ public class ServiceController {
                 .filter(service -> service.getCategory().toLowerCase().contains(lowercaseCategory))
                 .collect(Collectors.toList());
     }
-
 
     @GetMapping("calculated-price")
     public ResponseEntity<?> calculatedPrice(@RequestParam("id-service") Integer idService, @RequestParam("quantity") Integer quantity) {
@@ -68,15 +67,26 @@ public class ServiceController {
         return ResponseEntity.ok(response);
     }
 
-
-    @GetMapping("find-status-order")
+    @GetMapping("find-status-order-id")
     public OrderPayment findStatus(
-            @RequestParam(name = "id-order", required = false) Integer idOrder,
-            @RequestParam(name = "email", required = false) String email) {
-        if (idOrder == null && email == null) {
-            throw new IllegalArgumentException("Require one param 'idOrder' o 'email'.");
-        }
-        return orderService.updateEventPagoStatus(idOrder, email);
+            @RequestParam(name = "id-order") Long idOrder) {
+       OrderPayment orderPayment= orderPaymentRepository.findById(idOrder).orElseThrow(()->new NotFoundException("The order not exist."));
+       String status= service.status(orderPayment.getOrderId());
+       orderPayment.setStatusOrder(status);
+       orderPaymentRepository.save(orderPayment);
+       return orderPayment;
     }
-
+    @GetMapping("find-status-order-email")
+    public List<OrderPayment> findStatusEmail(@RequestParam(name = "email") String email) {
+        List<OrderPayment> orderPayments = orderPaymentRepository.findByEmail(email);
+        for (OrderPayment order : orderPayments) {
+            try {
+                String status = service.status(order.getOrderId());
+                order.setStatusOrder(status);
+                orderPaymentRepository.save(order);
+            } catch (NotFoundException ignored) {
+            }
+        }
+        return orderPayments.stream().filter(a->a.getStatusPayment().equals(StatusPayment.PAGO_REALIZADO)).collect(Collectors.toList());
+    }
 }

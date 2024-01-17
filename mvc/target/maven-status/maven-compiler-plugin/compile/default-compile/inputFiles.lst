@@ -3,6 +3,7 @@
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/exceptions/ErrorDto.java
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/exceptions/NotFoundException.java
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/models/request/NewPreferenceRequest.java
+/media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/config/CorsConfig.java
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/exceptions/GlobalHandleException.java
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/models/request/WebhookNotification.java
 /media/braian/Nuevo vol/documentos/Braian/Seguidores/mvc/src/main/java/com/seguidores/mvc/controller/ServiceController.java

@@ -1,12 +1,10 @@
 package com.seguidores.mvc.models.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
+@ToString
 public class WebhookNotification {
     private Long id;
     @JsonProperty("live_mode")
